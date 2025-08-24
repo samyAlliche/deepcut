@@ -2,9 +2,20 @@
   "repository": "https://github.com/vercel/examples.git",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "test:sync": "tsx lib/test.ts"
+  },
   "devDependencies": {
-    "@types/node": "^17.0.42",
-    "@vercel/node": "^2.9.6",
-    "typescript": "^4.7.3"
+    "@types/node": "^24.3.0",
+    "@vercel/node": "^2.3.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.14.0",
+    "@prisma/extension-accelerate": "^2.0.2",
+    "dotenv": "^17.2.1",
+    "prisma": "^6.14.0",
+    "tsx": "^4.20.4"
   }
 }

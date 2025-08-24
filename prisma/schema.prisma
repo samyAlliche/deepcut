@@ -1,0 +1,59 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+generator client {
+  provider = "prisma-client-js"
+  }
+
+model Channel {
+    id String @id
+    title String?
+    videos Video[]          @relation("ChannelToVideos")
+    playlists Playlist[]    @relation("ChannelToPlaylists")
+}
+
+model Playlist {
+  id           String   @id            
+  title        String?
+  channelId    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  etag         String?
+  itemCount    Int?
+  items        PlaylistItem[]
+
+  channel Channel? @relation("ChannelToPlaylists", fields: [channelId], references: [id], onDelete: Cascade)
+}
+
+model Video {
+  id        String   @id
+  title          String?
+  description    String?
+  channelId      String?
+  publishedAt    DateTime?
+  durationSeconds Int?
+  thumbnail      Json?
+  isAvailable    Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  playlists      PlaylistItem[]
+
+  channel Channel? @relation("ChannelToVideos", fields: [channelId], references: [id], onDelete: Cascade)
+
+  @@index([publishedAt])
+}
+
+model PlaylistItem {
+  playlistId String
+  videoId    String
+  position   Int?
+  addedAt    DateTime?
+
+  playlist Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  video    Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
+  @@id([playlistId, videoId])
+  @@index([playlistId])
+  @@index([videoId])
+}
