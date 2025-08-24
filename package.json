@@ -3,7 +3,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test:sync": "tsx lib/test.ts"
+    "test:sync": "tsx lib/test.ts",
+    "postinstall": "prisma generate"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",
