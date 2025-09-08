@@ -55,6 +55,12 @@ export async function syncPlaylist(playlistId: string, withDurations = false) {
 
   const seen = new Set<string>();
   for (const s of items) {
+    if (
+      s.title === "Deleted video" ||
+      s.description === "This video is unavailable."
+    ) {
+      continue;
+    }
     seen.add(s.id);
 
     // ensure channel exists if we're going to set channelId

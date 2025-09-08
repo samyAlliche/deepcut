@@ -12,7 +12,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (!id)
       return res.status(400).json({ error: "Missing playlist URL or ID" });
 
-    // This will create the playlist and sync all its items
     await syncPlaylist(id, true);
 
     res.status(200).json({ ok: true, id: id });
