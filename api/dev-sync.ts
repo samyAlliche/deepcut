@@ -3,6 +3,9 @@ import { extractPlaylistIdFromUrl } from "../lib/youtube";
 import { syncPlaylist } from "../lib/sync";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (process.env.NODE_ENV !== "development") {
+    return res.status(404).json({ error: "Not Found" });
+  }
   try {
     const urlOrId = String(req.query.url ?? "");
     if (!urlOrId) return res.status(400).json({ error: "Missing ?url=" });

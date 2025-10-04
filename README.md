@@ -1,31 +1,70 @@
-# Node.js Hello World
+# Deepcut API (Backend)
 
-Simple Node.js + Vercel example that returns a "Hello World" response.
+This is the backend for [Deepcut](https://deepcut.twxntytwo.com). The API is built with **Vercel Serverless Functions** and uses a PostgreSQL database with Prisma to manage and serve data to the front-end.
 
-## How to Use
+## Technologies Used
 
-You can choose from one of the following two methods to use this repository:
+- **Runtime:** [Node.js](https://nodejs.org/)
+- **Language:** [TypeScript](https://www.typescriptlang.org/)
+- **API Framework:** [Vercel Serverless Functions](https://vercel.com/docs/functions)
+- **ORM:** [Prisma](https://www.prisma.io/)
+- **Database:** [PostgreSQL](https://www.postgresql.org/)
 
-### One-Click Deploy
+## Project Setup
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=vercel-examples):
+To get the backend server running locally, follow these steps:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/examples/tree/main/solutions/node-hello-world&project-name=node-hello-world&repository-name=node-hello-world)
+1.  **Clone the repository** (if you haven't already):
 
-### Clone and Deploy
+    ```bash
+    git clone https://github.com/samyAlliche/deepcut.git
+    cd deepcut
+    ```
 
-```bash
-git clone https://github.com/vercel/examples/tree/main/solutions/node-hello-world
-```
+2.  **Install dependencies:**
 
-Install the Vercel CLI:
+    ```bash
+    npm install
+    ```
 
-```bash
-npm i -g vercel
-```
+3.  **Create your environment file:**
+    You will need a to create a Postgresql DB on Prisma in order to use this. Enter all the variables needed in your .env file.
 
-Then run the app at the root of the repository:
+    ```bash
+    POSTGRES_URL="*****"
+    PRISMA_DATABASE_URL="*****"
+    PRISMA_DATABASE_URL="*****"
+    YOUTUBE_API_KEY="*****"
+    NODE_ENV="development"
+    ```
 
-```bash
-vercel dev
-```
+4.  **Run database migrations:**
+    This command will sync your Prisma schema with your PostgreSQL database, creating the necessary tables.
+
+    ```bash
+    npx prisma migrate dev
+    npx prisma generate
+    ```
+
+5.  **Start the development server:**
+    ```bash
+    vercel dev
+    ```
+    The server should now be running on `http://localhost:3000` (or the port you've configured).
+
+## Data Model
+
+The data is structured around four main models managed by Prisma: `Channel`, `Playlist`, `Video`, and `PlaylistItem`. A `Channel` can have multiple `Playlists` and `Videos`. The `PlaylistItem` model links `Videos` to `Playlists` in a many-to-many relationship, creating the contents of each playlist. The full schema is defined in `prisma/schema.prisma`.
+
+## API Endpoints
+
+The server exposes the following endpoints:
+
+| Method | Endpoint                | Description                                                                   |
+| :----- | :---------------------- | :---------------------------------------------------------------------------- |
+| `POST` | `/api/playlist/add`     | Adds a new playlist to the database to be tracked.                            |
+| `POST` | `/api/playlist/sync`    | **(Protected)** Forces a sync for a single, existing playlist.                |
+| `POST` | `/api/playlist/syncAll` | **(Protected)** Triggers a synchronization for all tracked playlists.         |
+| `GET`  | `/api/blindpicks`       | **Core Feature:** Fetches a random selection of "deep cuts" for the user.     |
+| `GET`  | `/api/dev-sync`         | **(Development Only)** Utility endpoint for force-syncing a playlist via URL. |
+| `GET`  | `/api/hello`            | A simple health-check endpoint to verify that the server is running.          |
