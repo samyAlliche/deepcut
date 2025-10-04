@@ -1,7 +1,6 @@
 import { prisma } from "./db";
 
 export async function randomPicksAll(count: number) {
-  // For moderate table sizes, ORDER BY random() is fine.
   return prisma.$queryRawUnsafe(
     `SELECT * FROM "Video" WHERE "isAvailable" = true ORDER BY random() LIMIT $1`,
     count

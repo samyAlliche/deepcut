@@ -1,6 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { syncPlaylist } from "../../lib/sync";
-import { extractPlaylistIdFromUrl } from "../../lib/youtube";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {

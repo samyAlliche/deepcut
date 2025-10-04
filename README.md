@@ -28,13 +28,14 @@ To get the backend server running locally, follow these steps:
     ```
 
 3.  **Create your environment file:**
-    You will need a to create a Postgresql DB on Prisma in order to use this. Enter all the variables needed in your .env file.
+    You will need a to create a Postgresql DB on Prisma in order to use this. Enter all the variables needed in your .env file. SYNC_SECRET is a variable you can chose yourself, as long as it's the same in the Backend and Frontend.
 
     ```bash
     POSTGRES_URL="*****"
     PRISMA_DATABASE_URL="*****"
     PRISMA_DATABASE_URL="*****"
     YOUTUBE_API_KEY="*****"
+    SYNC_SECRET="*****"
     NODE_ENV="development"
     ```
 

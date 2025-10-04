@@ -17,7 +17,7 @@ export async function upsertPlaylistById(playlistId: string) {
 export async function syncPlaylist(playlistId: string, withDurations = false) {
   const { items, etag } = await fetchAllPlaylistItems(playlistId);
 
-  // ensure playlist exists (needed for FK on PlaylistItem)
+  // make sure playlist exists (needed for FK on PlaylistItem)
   await prisma.playlist.upsert({
     where: { id: playlistId },
     create: { id: playlistId },
@@ -43,11 +43,9 @@ export async function syncPlaylist(playlistId: string, withDurations = false) {
         itemCount: items.length,
       },
     });
-  } catch (_) {
-    // ignore metadata errors, continue syncing items
-  }
+  } catch {}
 
-  // Optional: get durations in bulk
+  // get durations
   let durationMap: Record<string, number> = {};
   if (withDurations && items.length) {
     durationMap = await fetchVideoDurationsSeconds(items.map((i) => i.id));
@@ -63,7 +61,7 @@ export async function syncPlaylist(playlistId: string, withDurations = false) {
     }
     seen.add(s.id);
 
-    // ensure channel exists if we're going to set channelId
+    // mae sure the channel exists
     if (s.channelId) {
       await prisma.channel.upsert({
         where: { id: s.channelId },

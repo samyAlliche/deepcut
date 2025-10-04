@@ -1,9 +1,8 @@
-// lib/youtube.ts
 const API_BASE = "https://www.googleapis.com/youtube/v3";
 const API_KEY = process.env.YOUTUBE_API_KEY!;
 if (!API_KEY) throw new Error("Missing YOUTUBE_API_KEY env var");
 
-/** Accepts raw playlistId or any YouTube URL that contains ?list=... */
+//accepts playlistId or any YouTube URL that contains ?list=...
 export function extractPlaylistIdFromUrl(urlOrId: string): string {
   if (!urlOrId.includes("://") && /^[A-Za-z0-9_-]+$/.test(urlOrId))
     return urlOrId;
@@ -21,10 +20,10 @@ export type YTPlaylistItem = {
   description?: string;
   channelId?: string;
   channelTitle?: string;
-  publishedAt?: string; // RFC3339
+  publishedAt?: string;
   thumbnail?: string;
   position?: number;
-  addedAt?: string; // RFC3339 (when added to the playlist)
+  addedAt?: string;
 };
 
 export async function fetchAllPlaylistItems(
@@ -108,7 +107,7 @@ export async function fetchVideoDurationsSeconds(
   return result;
 }
 
-// Fetch playlist metadata (title + channel info)
+//fetch playlist metadata (title + channel info)
 export async function fetchPlaylistMeta(
   playlistId: string
 ): Promise<{ title?: string; channelId?: string; channelTitle?: string }> {
